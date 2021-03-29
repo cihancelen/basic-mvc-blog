@@ -1,0 +1,13 @@
+﻿@using blog.Models
+@model List<tblKategoriler>
+
+    <!-- Widget [Categories Widget]-->
+    <div class="widget categories">
+        <header>
+            <h3 class="h6">Kategoriler</h3>
+        </header>
+        @foreach (var item in Model)
+        {
+            <div class="item d-flex justify-content-between"><a href="/Home/KategoriFiltre/@item.KategoriId">@item.Kategori</a><span>@item.tblPosts.Where(x => x.KategoriId == item.KategoriId).Count()</span></div>
+        }
+    </div>

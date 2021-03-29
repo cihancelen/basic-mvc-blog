@@ -1,0 +1,14 @@
+﻿@using blog.Models
+@model  List<tblEtiket>
+
+<div class="widget tags">
+    <header>
+        <h3 class="h6">Etiketler</h3>
+    </header>
+    <ul class="list-inline">
+        @foreach (var item in Model)
+        {
+            <li class="list-inline-item"><a href="#" class="tag">@item.Etiket</a></li>
+        }    
+    </ul>
+</div>

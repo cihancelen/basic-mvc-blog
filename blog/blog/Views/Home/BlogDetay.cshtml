@@ -1,0 +1,156 @@
+﻿@using blog.Models
+@model tblPosts
+@{
+    ViewBag.Title = "BlogDetay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    BlogDB db = new BlogDB();
+    if (!IsPost)
+    {
+        var post = db.tblPosts.Where(x => x.PostId == Model.PostId).FirstOrDefault();
+        post.Views = post.Views + 1;
+        db.SaveChangesAsync();
+    }
+
+}
+<!--SweetAlertJS-->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<div class="container">
+    <div class="row">
+        <!-- Latest Posts -->
+        <main class="post blog-post col-lg-8">
+            <div class="container">
+                <div class="post-single">
+                    <div class="post-thumbnail"><img src="@Model.PostResimUrl" alt="..." class="img-fluid"></div>
+                    <div class="post-details">
+                        <div class="post-meta d-flex justify-content-between">
+                            <div class="category"><a href="#">@Model.tblKategoriler.Kategori</a></div>
+                        </div>
+                        <h1>@Model.Baslik</h1>
+                        <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+                            <a class="author d-flex align-items-center flex-wrap">
+                                <div class="avatar"><img src="@Model.tblYazarlar.AvatarResim" alt="..." class="img-fluid"></div>
+                                <div class="title"><span>@Model.tblYazarlar.KullaniciAdi</span></div>
+                            </a>
+                            <div class="d-flex align-items-center flex-wrap">
+                                <div class="date"><i class="icon-clock"></i> @string.Format("{0:dd MMMM yyyy}", Model.EklenmeTarihi)</div>
+                                <div class="views"><i class="icon-eye"></i> @Model.Views</div>
+                                <div class="comments meta-last"><i class="icon-comment"></i>@Model.tblYorumlar.Count(x => x.PostId == Model.PostId)</div>
+                            </div>
+                        </div>
+                        <div class="post-body">
+                            <p class="lead">
+                                @Model.Aciklama
+                            </p>
+
+                            @Html.Raw(Model.Icerik)
+                            <p>
+                        </div>
+                        <div class="post-tags">
+                            @foreach (var item in Model.tblEtiket)
+                            {
+                                <a href="javascript:0" class="tag">@item.Etiket</a>
+                            }
+                        </div>
+
+                        <div class="post-comments">
+                            <header>
+                                <h3 class="h6">Yorumlar<span class="no-of-comments">(@Model.tblYorumlar.Where(x => x.PostId == Model.PostId).Count())</span></h3>
+                            </header>
+
+                            @foreach (var item in Model.tblYorumlar.Where(x => x.PostId == Model.PostId))
+                            {
+                                <div class="comment">
+                                    <div class="comment-header d-flex justify-content-between">
+                                        <div class="user d-flex align-items-center">
+                                            <div class="image"><img src="@item.tblYazarlar.AvatarResim" alt="..." class="img-fluid rounded-circle"></div>
+                                            <div class="title"><strong>@item.tblYazarlar.KullaniciAdi</strong><span class="date">@string.Format("{0:dd MMMM yyyy}", Model.EklenmeTarihi)</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-body">
+                                        <p>@item.Yorum</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        @if (Request.Cookies["User"] != null)
+                        {
+                            <div class="add-comment">
+                                <header>
+                                    <h3 class="h6">Yorum Yazın</h3>
+                                </header>
+                                <form class="commenting-form" method="post" onsubmit="return false">
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <textarea name="Yorum" placeholder="Yorumunuzu yazın" id="usercomment" class="form-control"></textarea>
+                                        </div>
+
+                                        <div class="form-group col-md-12">
+                                            <button type="submit" id="yorumGonder" class="btn btn-secondary">Yorumu Gönder</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="lead">
+                                <p>Yorumları görebilmek için <a href="/Uye/Giris">giriş</a> yapmış olmalısınız.Eğer üye değilseniz lütfen <a href="/Uye/KayitOl">üye </a>olunuz.</p>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </main>
+        <aside class="col-lg-4">
+            <!-- Widget [Search Bar Widget]-->
+            @Html.Action("Arama", "Home")
+
+            <!-- Widget [Latest Posts Widget]-->
+            @Html.Action("SonPostGetir", "Home")
+
+            <!-- Widget [Categories Widget]-->
+            @Html.Action("KategoriGetir", "Home")
+
+            <!-- Widget [Tags Cloud Widget]-->
+            @Html.Action("EtiketGetir", "Home")
+
+
+            @section scripts{
+                <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        $("#yorumGonder").click(function () {
+                            var yorum = $("#usercomment").val();
+
+                            if (yorum == "" || yorum == null) {
+                                swal("Uyarı","Yorum alanı boş bırakılamaz.","warning");
+                            }
+                            else {
+                                $.ajax({
+                                    url: "/Home/YorumYap/",
+                                    data: { 'Yorum':yorum , 'postId': @Model.PostId},
+                                    type:"POST",
+                                    dataType:"json",
+                                    success:function (data) {
+                                        window.location.href="/Home/BlogDetay/@Model.PostId";
+                                    },
+                                    error:function (error) {
+                                        console.log(error);
+                                    }
+                                });
+                            }
+                        });
+                    });
+                </script>
+
+
+            }
+
+        </aside>
+    </div>
+</div>

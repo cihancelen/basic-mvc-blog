@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Uyeler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using blog.Models
+@model List<tblYazarlar>
+
+<div class="col-md-12">
+    <div class="card card-plain">
+        <div class="card-header" data-background-color="purple">
+            <h4 class="title">Üyeler</h4>
+            <p class="category">Bu tablodan bütün üyeleri görebilirsiniz.</p>
+        </div>
+        <div class="card-content table-responsive">
+            <table class="table table-hover">
+                <tr>
+                    <th>ID</th>
+                    <th>Adı</th>
+                    <th>Soyadı</th>
+                    <th>Kullanıcı Adı</th>
+                    <th>E-posta</th>
+                    <th>İşlemler</th>
+                </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.YazarId</td>
+                            <td>@item.Ad</td>
+                            <td>@item.Soyad</td>
+                            <td>@item.KullaniciAdi</td>
+                            <td>@item.Email</td>
+                            <td>
+                                <button data-id="@item.YazarId" class="btn btn-danger btnSil btn-sm">Sil</button>
+                                <button data-id="@item.YazarId" class="btn btn-success btnOnayla btn-sm">Onayla</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        $(function () {
+
+            $(".btnSil").click(function () {
+                var id = $(this).data("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/UyeSil/" + id,
+                    success: function () {
+                        alert("başarılı");
+                        window.location.reload();
+                    }
+                });
+            });
+
+            $(".btnOnayla").click(function () {
+                var id = $(this).data("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/YazarOnayla/" + id,
+                    success: function () {
+                        alert("onaylama başarılı");
+                        window.location.reload();
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}

@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Postlar";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using blog.Models
+@model List<tblPosts>
+
+<div class="col-md-12">
+    <div class="card card-plain">
+        <div class="card-header" data-background-color="purple">
+            <h4 class="title">Postlar</h4>
+            <p class="category">Bu tablodan postları takip edebilirsiniz.</p>
+        </div>
+        <div class="card-content table-responsive">
+            <table class="table table-hover">
+                <tr>
+                    <th>ID</th>
+                    <th>Gündem Maddeleri</th>
+                    <th>Yazar</th>
+                    <th>Görüntülenme</th>
+                    <th>Oranlar</th>
+                    <th>İşlemler</th>
+                </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.PostId</td>
+                            <td>@item.Baslik</td>
+                            <td>@item.tblYazarlar.KullaniciAdi</td>
+                            <td>@item.Views</td>
+                            <td>
+                                <span class="cc-oran">
+                                    <span>
+                                        <i class="fa fa-comment-o"></i>
+                                    </span>
+                                    @item.tblYorumlar.Where(x => x.PostId == item.PostId).Count()
+                                </span>
+                            </td>
+                            <td>
+                                <button data-id="@item.PostId" class="btn btn-danger btnSil btn-sm">Sil</button>
+                                <a href="/Home/BlogDetay/@item.PostId" class="btn btn-info btn-sm">Git</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script>
+        $(function () {
+
+            $(".btnSil").click(function () {
+                var id = $(this).data("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/PostSil/" + id,
+                    success: function () {
+                        alert("başarılı");
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}

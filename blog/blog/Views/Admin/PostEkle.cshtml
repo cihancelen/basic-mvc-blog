@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "PostEkle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using blog.Models
+
+<script src="//cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="purple">
+                    <h4 class="title">Post Yaz</h4>
+                    <p class="category">Eklemek için tüm alanları boşluksuz uygun bir biçimde doldurunuz.</p>
+                </div>
+                <div class="card-content">
+                    <form action="/Admin/PostEkle" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Baslik</label>
+                                    <input type="text" name="Baslik" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Açıklama</label>
+                                    <input type="text" name="Aciklama" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group label-floating">
+                                    <textarea class="form-control" name="Icerik"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Kategori</label>
+                                    <select name="KategoriId" class="form-control">
+                                        @foreach (tblKategoriler item in ViewBag.Kategori)
+                                        {
+                                            <option value="@item.KategoriId">@item.Kategori</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Etiket( , ile ayırınız.)</label>
+                                    <input type="text" name="Etiket" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group label-floating">
+                                    <input type="file" name="PostResimUrl" class="form-control" style="opacity:1; position:relative" />
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary pull-right">Postu Ekle</button>
+                        <div class="clearfix"></div>
+                    </form>
+
+                    <script>
+                        CKEDITOR.replace('Icerik', { enterMode: CKEDITOR.ENTER_BR });
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--SweetAlertJS-->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+
+        var Baslik = $("input[name=Baslik]").val(),
+            Aciklama = $("input[name=Aciklama]").val(),
+            Icerik = CKEDITOR.instances.Icerik,
+            Etiket = $("input[name=Etiket]").val(),
+            PostResimUrl = $("input[PostResimUrl]").val();
+
+        if (Baslik == "" || Aciklama == "" || Icerik == "" || Etiket == "" || PostResimUrl == "") {
+            swal("Boş alanlar var", "Eğer içerik eklemek istiyorsanız lütfen boş alan bırakmayınız.", "warning");
+        }
+        
+        @Html.Raw(ViewBag.Hata)
+    });
+</script>

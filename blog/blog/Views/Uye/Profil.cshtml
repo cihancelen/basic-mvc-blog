@@ -1,0 +1,210 @@
+﻿
+@{
+    Layout = null;
+}
+
+@using blog.Models
+@model tblYazarlar
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <!-- MaterialDesign_Admin -->
+    <link href="~/Content/Admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Admin/css/Profil.css" rel="stylesheet" />
+    <link href="~/Content/Admin/css/material-dashboard.css" rel="stylesheet" />
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css' />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2><a href="/Home/">cihancelenBlog</a></h2>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="card hovercard">
+                    <div class="card-background">
+                        <img class="card-bkimg" alt="" src="@Model.AvatarResim" />
+                    </div>
+                    <div class="useravatar">
+                        <img alt="" src="@Model.AvatarResim">
+                    </div>
+                    <div class="card-info">
+                        <span class="card-title">@Model.KullaniciAdi</span>
+
+                    </div>
+                </div>
+
+                <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab">
+                            <i class="fa fa-address-book"></i>
+                            <div class="hidden-xs">Kişisel Bilgiler</div>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab">
+                            <i class="fa fa-key"></i>
+                            <div class="hidden-xs">Parolayı Güncelle</div>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" id="favorites" class="btn btn-default" href="#tab3" data-toggle="tab">
+                            <i class="fa fa-image"></i>
+                            <div class="hidden-xs">Profil Resmi</div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="well">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab1">
+                            <div class="form-group label-floating">
+                                <label class="control-label">Adınız</label>
+                                <label class="form-control color-gray">@Model.Ad</label>
+                            </div>
+                            <div class="form-group label-floating">
+                                <label class="control-label">Soyadınız</label>
+                                <label class="form-control color-gray">@Model.Soyad</label>
+                            </div>
+                            <div class="form-group label-floating">
+                                <label class="control-label">E-mail</label>
+                                <label class="form-control color-gray">@Model.Email</label>
+                            </div>
+                            <div class="form-group label-floating">
+                                <label class="control-label">Kullanıcı Adınız</label>
+                                <label class="form-control color-gray">@Model.KullaniciAdi</label>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade in" id="tab2">
+                            <form method="post">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Kullanılan Parola</label>
+                                    <input name="EskiParola" id="oldPass" type="password" class="form-control">
+                                </div>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Yeni Parola</label>
+                                    <input name="YeniParola" id="newPass" type="password" class="form-control">
+                                </div>
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Yeni Parola(Tekrar)</label>
+                                    <input name="YeniParolaTekrar" id="newPassAgain" type="password" class="form-control">
+                                </div>
+                                <button type="button" id="btnParolaGuncelle" class="btn btn-primary pull-right">Güncelle</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade in" id="tab3">
+                            <form action="/Uye/ProfilResimGuncelle" method="post" enctype="multipart/form-data">
+                                <div class="form-group label-floating">
+                                    <input name="AvatarResim" type="file" class="form-control" style="opacity:1;position:relative;">
+                                </div>
+                                <button type="submit" id="btnUpdateImage" class="btn btn-primary pull-right">Güncelle</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!--   Core JS Files   -->
+    <script src="~/Content/Admin/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="~/Content/Admin/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/Admin/js/material.min.js" type="text/javascript"></script>
+    <!--  Charts Plugin -->
+    <script src="~/Content/Admin/js/chartist.min.js"></script>
+    <!--  Dynamic Elements plugin -->
+    <script src="~/Content/Admin/js/arrive.min.js"></script>
+    <!--  PerfectScrollbar Library -->
+    <script src="~/Content/Admin/js/perfect-scrollbar.jquery.min.js"></script>
+    <!--  Notifications Plugin    -->
+    <script src="~/Content/Admin/js/bootstrap-notify.js"></script>
+    <!-- Material Dashboard javascript methods -->
+    <script src="~/Content/Admin/js/material-dashboard.js?v=1.2.0"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Content/Admin/js/demo.js"></script>
+    <script src="~/Content/Admin/js/md5Create.js"></script>
+    <script>
+        $(function () {
+
+            $("#btnParolaGuncelle").click(function () {
+                var oldPass = $("#oldPass").val(),
+                    newPass = $("#newPass").val(),
+                    newPassAgain = $("#newPassAgain").val(),
+                    databaseParola = '@Html.Raw(Model.Parola)';
+
+                oldPass = MD5(oldPass);
+
+                if (oldPass == "" || newPass == "" || newPassAgain == "") {
+                    swal("Boş alanlar var.", "Parolayı güncellemek için boş alan bırakmayınız.", "warning");
+                }
+                else if (oldPass != databaseParola) {
+                    swal("Eşleşme hatası", "Eski parolanız ile girdiğiniz parola eşleşmiyor.", "error");
+                }
+                else if (oldPass == newPass) {
+                    swal("Bilgilendirme", "Yeni parolanız eski parolanız ile aynı olamaz.", "info");
+                }
+                else if (newPass != newPassAgain) {
+                    swal("Yeni parola uyuşmuyor.", "İlk girdiğiniz parola ile ikinci girdiğiniz parola birbiriyle uyuşmuyor.", "error");
+                }
+                else if (newPass.length < 7 || newPass.length > 20) {
+                    swal("Parola uzunluğu uygun değil", "Yeni parolanın uzunluğu en az 7 karakter en fazla 20 karakter olmalıdır.", "info");
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Uye/Profil",
+                        data: { "parola": newPass },
+                        success: function (data) {
+                            if (data == "s") {
+                                swal("Parola güncellendi.", "", "success")
+                                .then((value) => { window.location.reload() });
+                            } else {
+                                swal("Hata", "", "error");
+                            }
+                        }
+
+                    });
+                }
+
+            });
+
+            $("#btnUpdateImage").click(function () {
+                //$.ajax({
+                //    type: "POST",
+                //    url: "/Uye/Profil",
+                //    data: {"AvatarResim":}
+                //});
+            });
+
+            $(".btn-pref .btn[type=button]").click(function () {
+                $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
+                // $(".tab").addClass("active"); // instead of this do the below
+                $(this).removeClass("btn-default").addClass("btn-primary");
+            });
+
+        });
+    </script>
+</body>
+
+</html>
